@@ -44,6 +44,11 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
             "title": "Trò chuyện với hỗ trợ viên",
             "payload": "CARE_HELP",
           },
+          {
+            "content_type": "text",
+            "title": "Quay lại với bot",
+            "payload": "RESTART_CONVERSATION",
+          }
         ]
       };
 
@@ -143,7 +148,6 @@ let passThreadControl = (sender_psid, app) => {
         "method": "POST",
         "json": request_body
       }, (err, res, body) => {
-        console.log(body)
         if (!err) {
           resolve('message sent!')
         } else {
