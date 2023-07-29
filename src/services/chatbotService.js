@@ -104,7 +104,9 @@ let requestTalkToAgent = (sender_psid) => {
       let app = "page_inbox"
       await passThreadControl(sender_psid, app);
       resolve("done");
+      console.log("chuyen qua ho tro vien")
     } catch (e) {
+      console.log("htv: " + e);
       reject(e);
     }
   });
