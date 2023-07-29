@@ -54,7 +54,6 @@ let postWebhook = async (req, res) => {
             if (webhook_standby && webhook_standby.message) {
               if (webhook_standby.message.text === "back" || webhook_standby.message.text === "exit") {
                 // call function to return the conversation to the primary app
-                // chatbotService.passThreadControl(webhook_standby.sender.id, "primary");
                 chatbotService.takeControlConversation(webhook_standby.sender.id);
               }
             }
@@ -145,22 +144,20 @@ let handleMessage = async (sender_psid, received_message) => {
 
 // Handles messaging_postbacks events
 let handlePostback = async (sender_psid, received_postback) => {
-    let response;
   
     // Get the payload for the postback
     let payload = received_postback.payload;
     console.log("paayload 2" , payload);
     switch (payload) {
       case "GET_STARTED":
-        response = { "text": "Chào mừng bạn tới hệ thống!"}
+      case "RESTART_CONVERSATION":
+        await chatbotService.sendMessageWelcomeNewUser(sender_psid);
         break;
       case "CARE_HELP":
-        response = { "text": "Hỗ trợ viên sẽ hỗ trợ bạn ngay!"}
+        await chatbotService.requestTalkToAgent(sender_psid);
         break;
       default:
         console.log("run default switch");
-
-      await chatbotService.sendMessageWelcomeNewUser(sender_psid, response);
     }
 }
 

@@ -26,6 +26,11 @@ let handleSetupProfileApi = () => {
                 "title": "Danh sách ca khám",
                 "url": "https://fastidious-cupcake-f83f7a.netlify.app/",
                 "webview_height_ratio": "full"
+              },
+              {
+                "type": "postback",
+                "title": "Quay lại với bot",
+                "payload": "RESTART_CONVERSATION"
               }
             ]
           }
