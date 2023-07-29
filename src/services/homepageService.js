@@ -61,7 +61,7 @@ let sendTypingOn = (sender_psid) => {
         "sender_action": "typing_on"
       };
 
-      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${pageAccessToken}`;
       request({
         "uri": url,
         "method": "POST",
@@ -91,7 +91,7 @@ let markMessageRead = (sender_psid) => {
         "sender_action": "mark_seen"
       };
 
-      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${pageAccessToken}`;
       request({
         "uri": url,
         "method": "POST",
