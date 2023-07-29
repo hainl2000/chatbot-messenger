@@ -93,7 +93,6 @@ let handleMessage = async (sender_psid, received_message) => {
 
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
       let payload = received_message.quick_reply.payload;
-      console.log('payload' , payload);
       if (payload === "CARE_HELP") {
         await chatbotService.requestTalkToAgent(sender_psid);
       }
@@ -105,9 +104,13 @@ let handleMessage = async (sender_psid, received_message) => {
 
     // Check if the message contains text
     if (received_message.text) {
-      let response = await processInput(received_message.text);
+      let processResponse = await processInput(received_message.text);
       // Create the payload for a basic text message
-      console.log(response);
+      if (!processResponse) {
+        response = {
+          "text": `Xin lỗi hiện tôi chưa thể xử lý thông tin này. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
+        }
+      }
       response = {
         "text": `${received_message.text}`
       }
@@ -143,7 +146,7 @@ let processInput = async (input) => {
     if (error) {
       return false;
     } else {
-      console.log(response, body);
+      console.log(response);
       return response;
     }
   });
