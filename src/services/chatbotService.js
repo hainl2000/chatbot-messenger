@@ -14,7 +14,6 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
         "text": `Chào mừng bạn tới hệ thống!`
       };
 
-      //send a quick reply
       let response2 = {
         "text": "Tôi có thể giúp gì bạn?",
         "quick_replies": [
@@ -196,7 +195,6 @@ let takeControlConversation = (sender_psid) =>{
         if (!err) {
           //send messages
           await sendMessage(sender_psid, {"text": "Siêu bot trở lại !!!"});
-          console.log("bot back!!!");
           await backToMainMenu(sender_psid);
           resolve('message sent!')
         } else {

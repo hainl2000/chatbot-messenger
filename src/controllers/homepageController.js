@@ -105,43 +105,48 @@ let handleMessage = async (sender_psid, received_message) => {
 
     // Check if the message contains text
     if (received_message.text) {
-
+      let response = await processInput(received_message.text);
       // Create the payload for a basic text message
+      console.log(response);
       response = {
-        "text": `You sent the message: "${received_message.text}". Now send me an image!`
+        "text": `${received_message.text}`
       }
     } else if (received_message.attachments) {
-        // Get the URL of the message attachment
-        let attachment_url = received_message.attachments[0].payload.url;
-        response = {
-          "attachment": {
-            "type": "template",
-            "payload": {
-              "template_type": "generic",
-              "elements": [{
-                "title": "Is this the right picture?",
-                "subtitle": "Tap a button to answer.",
-                "image_url": attachment_url,
-                "buttons": [
-                  {
-                    "type": "postback",
-                    "title": "Yes!",
-                    "payload": "yes",
-                  },
-                  {
-                    "type": "postback",
-                    "title": "No!",
-                    "payload": "no",
-                  }
-                ],
-              }]
-            }
-          }
-        }
+      // Get the URL of the message attachment
+      response = {
+        "text": `Xin lỗi tôi chưa thể xử lý ảnh. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
       }
+    }
 
     // Sends the response message
     await chatbotService.sendMessage(sender_psid, response);
+}
+
+let processInput = async (input) => {
+  const apiUrl = 'https://api.wit.ai/message';
+  const apiKey = process.env.WIT_KEY;
+  const queryParams = {
+    q: input,
+  };
+
+  const headers = {
+    Authorization: 'Bearer ' + apiKey,
+    'Content-Type': 'application/json', // Replace with the appropriate content type if needed
+  };
+
+  const options = {
+    url: apiUrl,
+    headers: headers,
+    qs: queryParams,
+  };
+  await request.get(options, (error, response, body) => {
+    if (error) {
+      return false;
+    } else {
+      console.log(response, body);
+      return response;
+    }
+  });
 }
 
 // Handles messaging_postbacks events
