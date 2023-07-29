@@ -1,8 +1,16 @@
 require("dotenv").config();
-import request from "request";
+import request from 'request';
 
 const verifyToken = process.env.VERIFY_TOKEN;
 const pageAccessToken =  process.env.PAGE_ACCESS_TOKEN;
+
+let test = (req, res) => {
+  request('http://www.google.com', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body); // Print the google web page.
+    }
+  });
+}
 
 let getHomepage = (req, res) => {
     return res.render('homepage.ejs')
@@ -152,8 +160,9 @@ let callSendAPI = (sender_psid, response) => {
 
 
 module.exports = {
-    getHomepage : getHomepage,
-    getWebhook : getWebhook,
-    postWebhook : postWebhook,
+  test: test,
+  getHomepage : getHomepage,
+  getWebhook : getWebhook,
+  postWebhook : postWebhook,
 }
 
