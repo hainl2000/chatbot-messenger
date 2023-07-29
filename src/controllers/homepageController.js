@@ -149,7 +149,7 @@ let handlePostback = async (sender_psid, received_postback) => {
   
     // Get the payload for the postback
     let payload = received_postback.payload;
-
+    console.log("paayload 2" , payload);
     switch (payload) {
       case "GET_STARTED":
         response = { "text": "Chào mừng bạn tới hệ thống!"}
