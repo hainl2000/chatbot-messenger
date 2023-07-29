@@ -196,6 +196,7 @@ let takeControlConversation = (sender_psid) =>{
         if (!err) {
           //send messages
           await sendMessage(sender_psid, {"text": "Siêu bot trở lại !!!"});
+          console.log("bot back!!!");
           await backToMainMenu(sender_psid);
           resolve('message sent!')
         } else {
@@ -203,6 +204,7 @@ let takeControlConversation = (sender_psid) =>{
         }
       });
     } catch (e) {
+      console.log("bot back:", e);
       reject(e);
     }
   });
