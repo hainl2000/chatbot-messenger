@@ -1,12 +1,12 @@
 import request from 'request';
 require("dotenv").config();
 
-const pageAccessToken =  process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN =  process.env.PAGE_ACCESS_TOKEN;
 
 let handleSetupProfileApi = () => {
   return new Promise((resolve, reject) => {
     try {
-      let url = `https://graph.facebook.com/v17.0/me/messenger_profile?access_token=${pageAccessToken}`
+      let url = `https://graph.facebook.com/v17.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`
       let requestBody = {
         "get_started" : {
           "payload" : "GET_STARTED"
@@ -62,7 +62,7 @@ let sendTypingOn = (sender_psid) => {
         "sender_action": "typing_on"
       };
 
-      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${pageAccessToken}`;
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
       request({
         "uri": url,
         "method": "POST",
@@ -92,7 +92,7 @@ let markMessageRead = (sender_psid) => {
         "sender_action": "mark_seen"
       };
 
-      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${pageAccessToken}`;
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
       request({
         "uri": url,
         "method": "POST",

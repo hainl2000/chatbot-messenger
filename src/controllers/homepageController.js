@@ -1,9 +1,10 @@
 require("dotenv").config();
 import request from 'request';
 import homepageService from '../services/homepageService'
+import chatbotService from '../services/chatbotService'
 
 const verifyToken = process.env.VERIFY_TOKEN;
-const pageAccessToken =  process.env.PAGE_ACCESS_TOKEN;
+const PAGE_ACCESS_TOKEN =  process.env.PAGE_ACCESS_TOKEN;
 
 let test = (req, res) => {
   request('http://www.google.com', function (error, response, body) {
@@ -37,7 +38,7 @@ let getWebhook = (req, res) => {
     }
 }
 
-let postWebhook = (req, res) => {
+let postWebhook = async (req, res) => {
      // Parse the request body from the POST
     let body = req.body;
 
@@ -56,7 +57,7 @@ let postWebhook = (req, res) => {
             console.log('Sender PSID: ' + sender_psid);
 
             if (webhook_event.message) {
-                handleMessage(sender_psid, webhook_event.message);        
+                handleMessage(sender_psid, webhook_event.message);
               } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
               }
@@ -73,12 +74,12 @@ let postWebhook = (req, res) => {
 }
 
 // Handles messages events
-let handleMessage = (sender_psid, received_message) => {
+let handleMessage = async (sender_psid, received_message) => {
     let response;
 
     // Check if the message contains text
-    if (received_message.text) {    
-  
+    if (received_message.text) {
+
       // Create the payload for a basic text message
       response = {
         "text": `You sent the message: "${received_message.text}". Now send me an image!`
@@ -111,57 +112,31 @@ let handleMessage = (sender_psid, received_message) => {
             }
           }
         }
-      } 
-    
+      }
+
     // Sends the response message
-    callSendAPI(sender_psid, response);   
+    await chatbotService.sendMessage(sender_psid, response);
 }
 
 // Handles messaging_postbacks events
-let handlePostback = (sender_psid, received_postback) => {
+let handlePostback = async (sender_psid, received_postback) => {
     let response;
   
     // Get the payload for the postback
     let payload = received_postback.payload;
+
     switch (payload) {
       case "GET_STARTED":
-        response = { "text": "Chào mừng bạn tới hệ thống!" }
+        response = { "text": "Chào mừng bạn tới hệ thống!"}
+        break;
+      case "CARE_HELP":
+        response = { "text": "Hỗ trợ viên sẽ hỗ trợ bạn ngay!"}
         break;
       default:
         console.log("run default switch");
+
+      await chatbotService.sendMessageWelcomeNewUser(sender_psid, response);
     }
-
-    // Set the response based on the postback payload
-
-    // Send the message to acknowledge the postback
-    callSendAPI(sender_psid, response);
-}
-
-// Sends response messages via the Send API
-let callSendAPI = async (sender_psid, response) => {
-  await homepageService.markMessageRead(sender_psid);
-  await homepageService.sendTypingOn(sender_psid);
-  // Construct the message body
-  let request_body = {
-    "recipient": {
-      "id": sender_psid
-    },
-    "message": response
-  }
-
-  // Send the HTTP request to the Messenger Platform
-  request({
-    "uri": "https://graph.facebook.com/v6.0/me/messages",
-    "qs": { "access_token": pageAccessToken },
-    "method": "POST",
-    "json": request_body
-  }, (err, res, body) => {
-    if (!err) {
-      console.log('message sent!')
-    } else {
-      console.error("Unable to send message:" + err);
-    }
-  }); 
 }
 
 let handleSetupProfile = async (req, res) => {
