@@ -92,7 +92,7 @@ let handleMessage = async (sender_psid, received_message) => {
 
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
       let payload = received_message.quick_reply.payload;
-
+      console.log('payload' , payload);
       if (payload === "CARE_HELP") {
         await chatbotService.requestTalkToAgent(sender_psid);
       }
