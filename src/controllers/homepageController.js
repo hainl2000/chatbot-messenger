@@ -48,6 +48,20 @@ let postWebhook = async (req, res) => {
         // Iterate over each entry - there may be multiple if batched
         body.entry.forEach(function(entry) {
 
+          if (entry.standby) {
+            //if user's message is "back" or "exit", return the conversation to the bot
+            let webhook_standby = entry.standby[0];
+            if (webhook_standby && webhook_standby.message) {
+              if (webhook_standby.message.text === "back" || webhook_standby.message.text === "exit") {
+                // call function to return the conversation to the primary app
+                // chatbotService.passThreadControl(webhook_standby.sender.id, "primary");
+                chatbotService.takeControlConversation(webhook_standby.sender.id);
+              }
+            }
+
+            return;
+          }
+
             // Get the webhook event. entry.messaging is an array, but 
             // will only ever contain one event, so we get index 0
             let webhook_event = entry.messaging[0];
@@ -75,6 +89,17 @@ let postWebhook = async (req, res) => {
 
 // Handles messages events
 let handleMessage = async (sender_psid, received_message) => {
+
+    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
+      let payload = received_message.quick_reply.payload;
+
+      if (payload === "CARE_HELP") {
+        await chatbotService.requestTalkToAgent(sender_psid);
+      }
+
+      return;
+    }
+
     let response;
 
     // Check if the message contains text
