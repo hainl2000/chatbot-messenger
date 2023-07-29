@@ -32,6 +32,7 @@ let handleSetupProfileApi = () => {
         ],
         "whitelisted_domains":[
           "https://chatbot-messenger-221s.onrender.com/",
+          "https://fastidious-cupcake-f83f7a.netlify.app/"
         ]
       };
       request({
