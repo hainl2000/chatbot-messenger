@@ -37,6 +37,7 @@ let handleSetupProfileApi = () => {
       request({
         "uri": url,
         "method": "POST",
+        "json": requestBody
       }, (err, res, body) => {
         if (!err) {
           resolve("OK");
@@ -50,7 +51,68 @@ let handleSetupProfileApi = () => {
   })
 }
 
+let sendTypingOn = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let request_body = {
+        "recipient": {
+          "id": sender_psid
+        },
+        "sender_action": "typing_on"
+      };
+
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      request({
+        "uri": url,
+        "method": "POST",
+        "json": request_body
+
+      }, (err, res, body) => {
+        if (!err) {
+          resolve("done!");
+        } else {
+          reject("Unable to send message:" + err);
+        }
+      });
+
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let markMessageRead = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let request_body = {
+        "recipient": {
+          "id": sender_psid
+        },
+        "sender_action": "mark_seen"
+      };
+
+      let url = `https://graph.facebook.com/v6.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      request({
+        "uri": url,
+        "method": "POST",
+        "json": request_body
+
+      }, (err, res, body) => {
+        if (!err) {
+          resolve("done!");
+        } else {
+          reject("Unable to send message:" + err);
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  })
+};
+
 module.exports = {
-  handleSetupProfileApi : handleSetupProfileApi()
+  handleSetupProfileApi : handleSetupProfileApi,
+  sendTypingOn : sendTypingOn,
+  markMessageRead : markMessageRead
 }
 
