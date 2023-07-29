@@ -1,5 +1,6 @@
 require("dotenv").config();
 import request from 'request';
+import homepageService from '../services/homepageService'
 
 const verifyToken = process.env.VERIFY_TOKEN;
 const pageAccessToken =  process.env.PAGE_ACCESS_TOKEN;
@@ -158,11 +159,26 @@ let callSendAPI = (sender_psid, response) => {
   }); 
 }
 
+let handleSetupProfile = async (req, res) => {
+  try {
+    await homepageService.handleSetupProfileApi();
+    return res.redirect("/");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+let getSetupProfilePage = (req, res) => {
+  return res.render('profile.ejs');
+}
+
 
 module.exports = {
   test: test,
   getHomepage : getHomepage,
   getWebhook : getWebhook,
   postWebhook : postWebhook,
+  handleSetupProfile : handleSetupProfile,
+  getSetupProfilePage : getSetupProfilePage
 }
 
