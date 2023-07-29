@@ -1,4 +1,5 @@
 require("dotenv").config();
+import request from "request";
 
 const verifyToken = process.env.VERIFY_TOKEN;
 const pageAccessToken =  process.env.PAGE_ACCESS_TOKEN;
