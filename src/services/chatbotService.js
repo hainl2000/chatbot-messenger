@@ -15,22 +15,8 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
         "text": `Chào mừng bạn tới hệ thống!`
       };
 
-      //send an image
-      let response2 = {
-        "attachment": {
-          "type": "image",
-          "payload": {
-            "url": "https://bit.ly/imageWelcome"
-          }
-        }
-      };
-
-      let response3 = {
-        "text": "Bất kể lúc nào, bạn có thể sử dụng menu để tìm dịch vụ mong muốn"
-      };
-
       //send a quick reply
-      let response4 = {
+      let response2 = {
         "text": "Tôi có thể giúp gì bạn?",
         "quick_replies": [
           {
@@ -54,8 +40,6 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
 
       await sendMessage(sender_psid, response1);
       await sendMessage(sender_psid, response2);
-      await sendMessage(sender_psid, response3);
-      await sendMessage(sender_psid, response4);
       resolve("done");
     } catch (e) {
       reject(e);
@@ -160,6 +144,38 @@ let passThreadControl = (sender_psid, app) => {
   });
 };
 
+let backToMainMenu = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = {
+        "text": "Tôi có thể giúp gì bạn?",
+        "quick_replies": [
+          {
+            "type": "web_url",
+            "title": "Danh sách ca khám",
+            "url": "https://fastidious-cupcake-f83f7a.netlify.app/",
+            "webview_height_ratio": "full"
+          },
+          {
+            "content_type": "text",
+            "title": "Trò chuyện với hỗ trợ viên",
+            "payload": "CARE_HELP",
+          },
+          {
+            "content_type": "text",
+            "title": "Quay lại với bot",
+            "payload": "RESTART_CONVERSATION",
+          }
+        ]
+      };
+      await sendMessage(sender_psid, response);
+      resolve("done");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 let takeControlConversation = (sender_psid) =>{
   return new Promise((resolve, reject) => {
     try {
@@ -180,7 +196,8 @@ let takeControlConversation = (sender_psid) =>{
       }, async (err, res, body) => {
         if (!err) {
           //send messages
-          await sendMessage(sender_psid, {"text": "The super bot came back !!!"});
+          await sendMessage(sender_psid, {"text": "Siêu bot trở lại !!!"});
+          await backToMainMenu(sender_psid);
           resolve('message sent!')
         } else {
           reject("Unable to send message:" + err);
