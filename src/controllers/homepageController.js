@@ -91,7 +91,9 @@ let handleMessage = async (sender_psid, received_message) => {
     // Check if the message contains text
     if (received_message.text) {
       console.log(received_message.text);
-      let processResponse = await processInput(received_message.text);
+      let processResponse = await processInput(received_message.text).catch( (e) => {
+        console.log(e);
+      });
 
       console.log(processResponse);
       // Create the payload for a basic text message
@@ -131,14 +133,15 @@ let processInput = async (input) => {
     headers: headers,
     qs: queryParams,
   };
+  let dataHandle;
   await request.get(options, (error, response, body) => {
     if (error) {
-      return false;
+      throw error;
     } else {
-      console.log(body);
-      return body;
+      dataHandle = body;
     }
   });
+  return dataHandle;
 }
 
 // Handles messaging_postbacks events
