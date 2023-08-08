@@ -107,7 +107,7 @@ let handleMessage = async (sender_psid, received_message) => {
           "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
         }
       } else if (processResponse?.data?.intents[0]?.name == "muon_kham"){
-        if (Object.key(processResponse?.data?.entities).length == 0) {
+        if (Object.keys(processResponse?.data?.entities).length == 0) {
           response = {
             "text": 'Bạn có thể cung cấp cho bot thông tin'
           }
