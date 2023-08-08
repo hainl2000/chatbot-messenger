@@ -112,8 +112,9 @@ let handleMessage = async (sender_psid, received_message) => {
             "text": 'Bạn có thể cung cấp cho thông tin cụ thể hơn được không ạ?'
           }
         } else {
+          const specialization = Object.values(processResponse?.data?.entities)[0]?.name
           response = {
-            "text" : `https://healthcarebachkhoa.netlify.app/specialization/${processResponse?.data?.entities[0]?.name}`
+            "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specialization}`
           }
         }
       }
