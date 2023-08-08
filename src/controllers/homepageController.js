@@ -135,6 +135,7 @@ let processInput = async (input) => {
     if (error) {
       return false;
     } else {
+      console.log(body);
       return body;
     }
   });
