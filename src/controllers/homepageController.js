@@ -100,7 +100,7 @@ let handleMessage = async (sender_psid, received_message) => {
           "text": `Xin lỗi hiện tôi chưa thể xử lý thông tin này. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
         }
       }
-      if (processResponse?.data?.intents?.name == "start") {
+      if (processResponse?.data?.intents[0]?.name == "start") {
         response = {
           "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
         }
