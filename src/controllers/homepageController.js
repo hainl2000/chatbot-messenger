@@ -92,7 +92,7 @@ let handleMessage = async (sender_psid, received_message) => {
     if (received_message.text) {
       console.log(received_message.text);
       let processResponse = await processInput(received_message.text);
-      console.log(processResponse);
+      console.log(processResponse?.data);
 
       // Create the payload for a basic text message
       if (!processResponse) {
@@ -130,7 +130,6 @@ let processInput = async (input) => {
     headers: headers,
     params: queryParams,
   };
-
 
   try {
     return await axios.get(apiUrl, options);
