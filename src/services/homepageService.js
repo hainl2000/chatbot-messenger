@@ -24,7 +24,7 @@ let handleSetupProfileApi = () => {
               {
                 "type": "web_url",
                 "title": "Danh sách ca khám",
-                "url": "https://fastidious-cupcake-f83f7a.netlify.app/",
+                "url": "https://healthcarebachkhoa.netlify.app/specializations",
                 "webview_height_ratio": "full"
               },
               {
