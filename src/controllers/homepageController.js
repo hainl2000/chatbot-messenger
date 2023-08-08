@@ -6,14 +6,6 @@ import chatbotService from '../services/chatbotService'
 const verifyToken = process.env.VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN =  process.env.PAGE_ACCESS_TOKEN;
 
-let test = (req, res) => {
-  request('http://www.google.com', function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body); // Print the google web page.
-    }
-  });
-}
-
 let getHomepage = (req, res) => {
     return res.render('homepage.ejs')
 }
@@ -29,7 +21,6 @@ let getWebhook = (req, res) => {
         // Check the mode and token sent is correct
         if (mode === "subscribe" && token === verifyToken) {
         // Respond with the challenge token from the request
-        console.log("WEBHOOK_VERIFIED");
         res.status(200).send(challenge);
         } else {
         // Respond with '403 Forbidden' if verify tokens do not match
@@ -47,14 +38,11 @@ let postWebhook = async (req, res) => {
 
         // Iterate over each entry - there may be multiple if batched
         body.entry.forEach(function(entry) {
-          console.log(entry);
           if (entry.standby) {
             //if user's message is "back" or "exit", return the conversation to the bot
             let webhook_standby = entry.standby[0];
             if (webhook_standby && webhook_standby.message) {
-              console.log(webhook_standby);
               if (webhook_standby.message.text === "back" || webhook_standby.message.text === "exit") {
-                console.log("chat: ", webhook_standby.message.text);
                 // call function to return the conversation to the primary app
                 chatbotService.takeControlConversation(webhook_standby.sender.id);
               }
@@ -66,10 +54,8 @@ let postWebhook = async (req, res) => {
             // Get the webhook event. entry.messaging is an array, but 
             // will only ever contain one event, so we get index 0
             let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
 
             let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
 
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
@@ -105,6 +91,8 @@ let handleMessage = async (sender_psid, received_message) => {
     // Check if the message contains text
     if (received_message.text) {
       let processResponse = await processInput(received_message.text);
+
+      console.log(processResponse);
       // Create the payload for a basic text message
       if (!processResponse) {
         response = {
@@ -146,7 +134,6 @@ let processInput = async (input) => {
     if (error) {
       return false;
     } else {
-      console.log(body);
       return body;
     }
   });
@@ -157,7 +144,6 @@ let handlePostback = async (sender_psid, received_postback) => {
   
     // Get the payload for the postback
     let payload = received_postback.payload;
-    console.log("paayload 2" , payload);
     switch (payload) {
       case "GET_STARTED":
       case "RESTART_CONVERSATION":
@@ -186,7 +172,6 @@ let getSetupProfilePage = (req, res) => {
 
 
 module.exports = {
-  test: test,
   getHomepage : getHomepage,
   getWebhook : getWebhook,
   postWebhook : postWebhook,
