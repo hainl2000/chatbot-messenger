@@ -16,18 +16,6 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
 
       let response2 = {
         "text": "Tôi có thể giúp gì bạn?",
-        "quick_replies": [
-          {
-            "content_type": "text",
-            "title": "Trò chuyện với hỗ trợ viên",
-            "payload": "CARE_HELP",
-          },
-          {
-            "content_type": "text",
-            "title": "Quay lại với bot",
-            "payload": "RESTART_CONVERSATION",
-          }
-        ]
       };
 
       await sendMessage(sender_psid, response1);
@@ -139,18 +127,6 @@ let backToMainMenu = (sender_psid) => {
     try {
       let response = {
         "text": "Tôi có thể giúp gì bạn?",
-        "quick_replies": [
-          {
-            "content_type": "text",
-            "title": "Trò chuyện với hỗ trợ viên",
-            "payload": "CARE_HELP",
-          },
-          {
-            "content_type": "text",
-            "title": "Quay lại với bot",
-            "payload": "RESTART_CONVERSATION",
-          }
-        ]
       };
       await sendMessage(sender_psid, response);
       resolve("done");
