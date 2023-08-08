@@ -91,7 +91,7 @@ let handleMessage = async (sender_psid, received_message) => {
     // Check if the message contains text
     if (received_message.text) {
       console.log(received_message.text);
-      let processResponse = processInput(received_message.text);
+      let processResponse = await processInput(received_message.text);
       console.log(processResponse);
 
       // Create the payload for a basic text message
@@ -114,7 +114,7 @@ let handleMessage = async (sender_psid, received_message) => {
     await chatbotService.sendMessage(sender_psid, response);
 }
 
-let processInput = (input) => {
+let processInput = async (input) => {
   const apiUrl = 'https://api.wit.ai/message';
   const apiKey = process.env.WIT_KEY;
   const queryParams = {
