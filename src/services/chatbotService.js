@@ -18,12 +18,6 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
         "text": "Tôi có thể giúp gì bạn?",
         "quick_replies": [
           {
-            "type": "web_url",
-            "title": "Danh sách ca khám",
-            "url": "https://fastidious-cupcake-f83f7a.netlify.app/",
-            "webview_height_ratio": "full"
-          },
-          {
             "content_type": "text",
             "title": "Trò chuyện với hỗ trợ viên",
             "payload": "CARE_HELP",
@@ -92,9 +86,7 @@ let requestTalkToAgent = (sender_psid) => {
       let app = "page_inbox"
       await passThreadControl(sender_psid, app);
       resolve("done");
-      console.log("chuyen qua ho tro vien")
     } catch (e) {
-      console.log("htv: " + e);
       reject(e);
     }
   });
@@ -148,12 +140,6 @@ let backToMainMenu = (sender_psid) => {
       let response = {
         "text": "Tôi có thể giúp gì bạn?",
         "quick_replies": [
-          {
-            "type": "web_url",
-            "title": "Danh sách ca khám",
-            "url": "https://fastidious-cupcake-f83f7a.netlify.app/",
-            "webview_height_ratio": "full"
-          },
           {
             "content_type": "text",
             "title": "Trò chuyện với hỗ trợ viên",
