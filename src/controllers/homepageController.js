@@ -1,5 +1,5 @@
 require("dotenv").config();
-import request from 'request';
+import axios from "axios";
 import homepageService from '../services/homepageService'
 import chatbotService from '../services/chatbotService'
 
@@ -128,16 +128,15 @@ let processInput = async (input) => {
 
   const options = {
     headers: headers,
-    qs: queryParams,
+    params: queryParams,
   };
 
-  let dataHandle;
 
-  request.get(apiUrl, options, (err, res, body) => {
-    if (err) { return console.log(err); }
-    dataHandle = body;
-  })
-  return dataHandle;
+  try {
+    return await axios.get(apiUrl, options);
+  } catch (error) {
+    return false;
+  }
 }
 
 // Handles messaging_postbacks events
