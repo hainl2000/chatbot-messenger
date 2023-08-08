@@ -91,9 +91,12 @@ let handleMessage = async (sender_psid, received_message) => {
     // Check if the message contains text
     if (received_message.text) {
       console.log(received_message.text);
-      let processResponse = await processInput(received_message.text).catch( (e) => {
-        console.log(e);
-      });
+      try {
+        let processResponse = await processInput(received_message.text);
+        console.log(processResponse);
+      } catch (error) {
+        console.log(error)
+      }
 
       console.log(processResponse);
       // Create the payload for a basic text message
