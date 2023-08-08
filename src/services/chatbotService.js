@@ -9,8 +9,12 @@ const PRIMARY_RECEIVER_ID = process.env.FACEBOOK_APP_ID;
 let sendMessageWelcomeNewUser = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
-
+      //send text message
       let response1 = {
+        "text": `Chào mừng bạn tới hệ thống!`
+      };
+
+      let response2 = {
         "text": "Tôi có thể giúp gì bạn?",
         "quick_replies": [
           {
@@ -27,6 +31,7 @@ let sendMessageWelcomeNewUser = (sender_psid) => {
       };
 
       await sendMessage(sender_psid, response1);
+      await sendMessage(sender_psid, response2);
       resolve("done");
     } catch (e) {
       reject(e);
