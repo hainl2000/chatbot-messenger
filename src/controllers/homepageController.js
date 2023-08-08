@@ -92,9 +92,7 @@ let handleMessage = async (sender_psid, received_message) => {
     if (received_message.text) {
       console.log(received_message.text);
       let processResponse = await processInput(received_message.text);
-      console.log(processResponse?.data);
       console.log(processResponse?.data?.entities);
-      console.log(processResponse?.data?.intents);
 
       // Create the payload for a basic text message
       if (!processResponse) {
@@ -112,7 +110,9 @@ let handleMessage = async (sender_psid, received_message) => {
             "text": 'Bạn có thể cung cấp cho thông tin cụ thể hơn được không ạ?'
           }
         } else {
-          const specialization = Object.values(processResponse?.data?.entities)[0]?.name
+          console.log(Object.values(processResponse?.data?.entities));
+          console.log(Object.values(processResponse?.data?.entities)[0]);
+          const specialization = Object.values(processResponse?.data?.entities)[0][0]?.name
           response = {
             "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specialization}`
           }
