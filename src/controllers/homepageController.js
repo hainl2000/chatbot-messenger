@@ -93,6 +93,8 @@ let handleMessage = async (sender_psid, received_message) => {
       console.log(received_message.text);
       let processResponse = await processInput(received_message.text);
       console.log(processResponse?.data);
+      console.log(processResponse?.data?.entities);
+      console.log(processResponse?.data?.intents);
 
       // Create the payload for a basic text message
       if (!processResponse) {
@@ -104,9 +106,15 @@ let handleMessage = async (sender_psid, received_message) => {
         response = {
           "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
         }
-      } else {
-        response = {
-          "text": `${received_message.text}`
+      } else if (processResponse?.data?.intents[0]?.name == "muon_kham"){
+        if (Object.key(processResponse?.data?.entities).length == 0) {
+          response = {
+            "text": 'Bạn có thể cung cấp cho bot thông tin'
+          }
+        } else {
+          response = {
+            "text" : `${received_message.text}`
+          }
         }
       }
     } else if (received_message.attachments) {
@@ -115,8 +123,11 @@ let handleMessage = async (sender_psid, received_message) => {
         "text": `Xin lỗi tôi chưa thể xử lý ảnh. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
       }
     }
-
+    const defaultResponse = {
+      "text": `Hiện tại tôi đang được training.Nếu không thỏa mãn với câu trả lời. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
+    }
     // Sends the response message
+    await chatbotService.sendMessage(sender_psid, defaultResponse);
     await chatbotService.sendMessage(sender_psid, response);
 }
 
