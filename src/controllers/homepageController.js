@@ -109,11 +109,11 @@ let handleMessage = async (sender_psid, received_message) => {
       } else if (processResponse?.data?.intents[0]?.name == "muon_kham"){
         if (Object.keys(processResponse?.data?.entities).length == 0) {
           response = {
-            "text": 'Bạn có thể cung cấp cho bot thông tin'
+            "text": 'Bạn có thể cung cấp cho thông tin cụ thể hơn được không ạ?'
           }
         } else {
           response = {
-            "text" : `${received_message.text}`
+            "text" : `https://healthcarebachkhoa.netlify.app/specialization/${processResponse?.data?.entities[0]?.name}`
           }
         }
       }
@@ -124,7 +124,7 @@ let handleMessage = async (sender_psid, received_message) => {
       }
     }
     const defaultResponse = {
-      "text": `Hiện tại tôi đang được training.Nếu không thỏa mãn với câu trả lời. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
+      "text": `Hiện tại tôi đang được training. Nếu không thỏa mãn với câu trả lời, bạn có thể gọi hỗ trợ viên để giúp đỡ.`
     }
     // Sends the response message
     await chatbotService.sendMessage(sender_psid, defaultResponse);
