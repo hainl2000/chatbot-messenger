@@ -100,8 +100,14 @@ let handleMessage = async (sender_psid, received_message) => {
           "text": `Xin lỗi hiện tôi chưa thể xử lý thông tin này. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
         }
       }
-      response = {
-        "text": `${received_message.text}`
+      if (processResponse?.data?.intents?.name == "start") {
+        response = {
+          "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
+        }
+      } else {
+        response = {
+          "text": `${received_message.text}`
+        }
       }
     } else if (received_message.attachments) {
       // Get the URL of the message attachment
