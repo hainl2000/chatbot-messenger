@@ -86,7 +86,7 @@ let handleMessage = async (sender_psid, received_message) => {
       return;
     }
 
-    let response;
+    let responses;
 
     // Check if the message contains text
     if (received_message.text) {
@@ -101,35 +101,49 @@ let handleMessage = async (sender_psid, received_message) => {
         }
       }
       if (processResponse?.data?.intents[0]?.name == "start") {
-        response = {
-          "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
-        }
+        responses = [
+          {
+            "text": 'Bot chào bạn nhé ^^. Không biết bạn cần gì ạ?'
+          }
+        ]
       } else if (processResponse?.data?.intents[0]?.name == "muon_kham"){
         if (Object.keys(processResponse?.data?.entities).length == 0) {
-          response = {
-            "text": 'Bạn có thể cung cấp cho thông tin cụ thể hơn được không ạ?'
-          }
+          responses = [
+            {
+              "text": 'Bạn có thể cung cấp cho thông tin cụ thể hơn được không ạ?'
+            }
+          ]
         } else {
           console.log(Object.values(processResponse?.data?.entities));
           console.log(Object.values(processResponse?.data?.entities)[0]);
           const specialization = Object.values(processResponse?.data?.entities)[0][0]?.name
-          response = {
-            "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specialization}`
-          }
+          responses = [
+            {
+              "text" : `Bạn có thể vào khoa ${specialization} để khám.`
+            },
+            {
+              "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specialization}`
+            }
+          ]
         }
       }
     } else if (received_message.attachments) {
       // Get the URL of the message attachment
-      response = {
-        "text": `Xin lỗi tôi chưa thể xử lý ảnh. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
-      }
+      responses = [
+        {
+          "text": `Xin lỗi tôi chưa thể xử lý ảnh. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
+        }
+      ]
+
     }
     const defaultResponse = {
       "text": `Hiện tại tôi đang được training. Nếu không thỏa mãn với câu trả lời, bạn có thể gọi hỗ trợ viên để giúp đỡ.`
     }
     // Sends the response message
     await chatbotService.sendMessage(sender_psid, defaultResponse);
-    await chatbotService.sendMessage(sender_psid, response);
+    responses.forEach( (response) => {
+       chatbotService.sendMessage(sender_psid, response);
+    })
 }
 
 let processInput = async (input) => {
