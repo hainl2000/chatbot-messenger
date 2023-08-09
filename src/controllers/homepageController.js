@@ -74,6 +74,31 @@ let postWebhook = async (req, res) => {
     }
 }
 
+let specializationInVn = (enName) => {
+  let name;
+  switch (enName) {
+    case "dinhduong" :
+      name =  'Dinh dưỡng';
+      break;
+    case "nhi" :
+      name = 'Nhi';
+      break;
+    case "vatlytrilieu" :
+      name = 'Vật lý trị liệu';
+      break;
+    case "tamly" :
+      name = 'Tâm lý';
+      break;
+    case "suckhoetamthan" :
+      name = 'Sức khỏe tâm thần';
+      break;
+    case "dalieu" :
+      name = 'Da liễu';
+      break;
+  }
+  return name;
+}
+
 // Handles messages events
 let handleMessage = async (sender_psid, received_message) => {
 
@@ -96,7 +121,7 @@ let handleMessage = async (sender_psid, received_message) => {
 
       // Create the payload for a basic text message
       if (!processResponse) {
-        response = {
+        responses = {
           "text": `Xin lỗi hiện tôi chưa thể xử lý thông tin này. Bạn có thể gọi hỗ trợ viên để giúp đỡ.`
         }
       }
@@ -116,13 +141,15 @@ let handleMessage = async (sender_psid, received_message) => {
         } else {
           console.log(Object.values(processResponse?.data?.entities));
           console.log(Object.values(processResponse?.data?.entities)[0]);
-          const specialization = Object.values(processResponse?.data?.entities)[0][0]?.name
+          const specializationSlug = Object.values(processResponse?.data?.entities)[0][0]?.name
+          const specializationName = Object.values(processResponse?.data?.entities)[0][0]?.role
+          const vnName =  specializationInVn(specializationName);
           responses = [
             {
-              "text" : `Bạn có thể vào khoa ${specialization} để khám.`
+              "text" : `Bạn có thể vào khoa ${vnName} để khám.`
             },
             {
-              "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specialization}`
+              "text" : `https://healthcarebachkhoa.netlify.app/specialization/${specializationSlug}`
             }
           ]
         }
